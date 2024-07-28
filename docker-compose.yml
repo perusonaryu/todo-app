@@ -4,10 +4,10 @@ services:
       context: .
       dockerfile: docker/svelte/Dockerfile
     ports:
-      - '3000:3000'
+      - '5173:5173'
     volumes:
-      - ./frontend:/app/svelte/src # ホストのfrontendディレクトリをコンテナの/app/svelteにマウント
-      - /app/svelte/src/node_modules
+      - ./frontend:/app/svelte # ホストのfrontendディレクトリをコンテナの/app/svelteにマウント
+      - /app/svelte/node_modules
     depends_on:
       - go-app # go-appに依存するためgo-appの後に起動する
 

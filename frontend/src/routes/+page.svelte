@@ -3,6 +3,7 @@
 
 	export let data: PageData;
 	console.log(data);
+	console.log('aaaaaaaaaa');
 </script>
 
 <svelte:head>
@@ -11,7 +12,11 @@
 </svelte:head>
 
 <section>
-	<div></div>
+	<div>aaaaaaaaaaaaaaa</div>
+	<div>aaaaaaaaaaaaaaa</div>
+	<div>aaaaaaaaaaaaaaa</div>
+	<div>bbbbbbbbbbbbb</div>
+	<div class="bg-blue-500 text-white p-4 rounded-lg">Hello, Tailwind CSS in SvelteKit!</div>
 </section>
 
 <style>

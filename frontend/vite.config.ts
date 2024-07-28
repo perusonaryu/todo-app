@@ -7,7 +7,7 @@ export default defineConfig({
 		proxy: {
 			'/api': 'http://go-app:8080'
 		},
-		port: 3000,
+		port: 5173,
 		host: true, // この行を追加して、ホスト全体からアクセス可能にする
 		strictPort: true
 	}
