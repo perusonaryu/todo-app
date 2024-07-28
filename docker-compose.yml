@@ -1,0 +1,42 @@
+services:
+  svelte-app:
+    build:
+      context: .
+      dockerfile: docker/svelte/Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app/svelte/src # ホストのfrontendディレクトリをコンテナの/app/svelteにマウント
+      - /app/svelte/src/node_modules
+    depends_on:
+      - go-app # go-appに依存するためgo-appの後に起動する
+
+  go-app:
+    build:
+      context: .
+      dockerfile: docker/go/Dockerfile
+    ports:
+      - '8080:8080'
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./backend:/app/go/src # ホストのbackendディレクトリをコンテナの/app/backendにマウント
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/db?sslmode=disable
+      - PORT=8080
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - '5432:5432'
+
+volumes:
+  db_data:
