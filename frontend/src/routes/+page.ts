@@ -3,8 +3,10 @@
 export const prerender = false;
 
 import type { PageLoad } from './$types';
+import type { Task } from '../types/task';
+
 export const load: PageLoad = async ({ fetch }) => {
 	const res = await fetch(`/api/tasks`);
-	const item = await res.json();
-	return { item };
+	const { tasks }: { tasks: Task[] } = await res.json();
+	return { tasks };
 };

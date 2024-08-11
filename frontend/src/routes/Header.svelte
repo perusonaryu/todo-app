@@ -1,9 +1,3 @@
-<script>
-	import { page } from '$app/stores';
-	import logo from '$lib/images/svelte-logo.svg';
-	import github from '$lib/images/github.svg';
-</script>
-
-<header>
-	<div>header!!!!!!!!!</div>
+<header class="w-full py-7 bg-slate-300 text-center text-white font-bold text-4xl">
+	<div>TasCon</div>
 </header>

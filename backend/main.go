@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -76,7 +77,7 @@ func main() {
 
 		// 取得したデータを表示
 		for _, task := range tasks {
-			fmt.Printf("ID: %s, Name: %s, Email: %s\n", task.ID, task.Title, task.Detail)
+			fmt.Printf("ID: %s, title: %s, Detail: %s\n", task.ID, task.Title, task.Detail)
 		}
 
 		c.JSON(200, gin.H{
@@ -84,19 +85,31 @@ func main() {
 		})
 	})
 
-	r.GET("/create", func(ctx *gin.Context) {
+	r.POST("api/create", func(ctx *gin.Context) {
+		var request models.CreateRequest
+		if err := ctx.ShouldBindJSON(&request); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 
 		newTask := models.Task{
 			ID:     uuid.New(),
-			Title:  "Finish project",
-			Detail: "aaaaaaaaaaaaaaa",
+			Title:  request.Title,
+			Detail: request.Detail,
 			Status: "wait",
 		}
 
 		result := db.Create(&newTask)
 		if result.Error != nil {
-			log.Fatalf("failed to create task: %v", result.Error)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "内部サーバーエラー"})
+			return
 		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "正常に作成されました",
+			"title":   request.Title,
+			"detail":  request.Detail,
+		})
 	})
 
 	port := os.Getenv("PORT")
